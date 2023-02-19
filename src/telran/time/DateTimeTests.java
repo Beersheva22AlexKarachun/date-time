@@ -13,7 +13,10 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import telran.time.application.PrintCalendar;
 
 class DateTimeTests {
 
@@ -22,6 +25,7 @@ class DateTimeTests {
 	}
 
 	@Test
+//	@Disabled
 	void localDateTest() {
 		LocalDate birthDateAS = LocalDate.parse("1799-06-06");
 		LocalDate barMizvaAS = birthDateAS.plusYears(13);
@@ -35,12 +39,14 @@ class DateTimeTests {
 	}
 
 	@Test
+//	@Disabled
 	void barMizvaTest() {
 		LocalDate current = LocalDate.now();
 		assertEquals(current.plusYears(13), current.with(new BarMizvaAdjuster()));
 	}
 
 	@Test
+//	@Disabled
 	void displayCurrentDateTimeCanadaTimeZones() {
 		// displaying current local date and time for all Canada time zones
 		// displaying should contains time zone name
@@ -56,6 +62,7 @@ class DateTimeTests {
 	}
 
 	@Test
+//	@Disabled
 	void nextFriday13Test() {
 		LocalDate date1 = LocalDate.of(2023, 2, 14);
 		LocalDate date2 = LocalDate.of(2023, 10, 13);
@@ -67,6 +74,7 @@ class DateTimeTests {
 	}
 
 	@Test
+//	@Disabled
 	void workingDaysTest() {
 		HashSet<DayOfWeek> dayOffs1 = new HashSet<>();
 		dayOffs1.add(DayOfWeek.SUNDAY);
@@ -80,5 +88,11 @@ class DateTimeTests {
 		LocalDate date = LocalDate.of(2023, 2, 14);
 		assertEquals(LocalDate.of(2023, 2, 26), date.with(new WorkingDaysAdjuster(10, dayOffs1)));
 		assertEquals(LocalDate.of(2023, 3, 3), date.with(new WorkingDaysAdjuster(10, dayOffs2)));
+	}
+
+	@Test
+	void test() {
+		PrintCalendar.main(new String[] { "12", "2023", "Sunday" });
+		PrintCalendar.main(new String[] { "12", "1994", "Sunday" });
 	}
 }

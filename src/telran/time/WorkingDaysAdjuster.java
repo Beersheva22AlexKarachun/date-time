@@ -14,20 +14,20 @@ public class WorkingDaysAdjuster implements TemporalAdjuster {
 	@Override
 	public Temporal adjustInto(Temporal temporal) {
 		int count = 0;
-		Temporal res = temporal;
-		while (count != amountOfDays) {
-			DayOfWeek currentDayOfWeek = DayOfWeek.of(res.get(ChronoField.DAY_OF_WEEK));
-			if (!dayOffs.contains(currentDayOfWeek)) {
-				count++;
+		if (dayOffs.size() < DayOfWeek.values().length) {
+			while (count != amountOfDays) {
+				DayOfWeek currentDayOfWeek = DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
+				if (!dayOffs.contains(currentDayOfWeek)) {
+					count++;
+				}
+				temporal = temporal.plus(1, ChronoUnit.DAYS);
 			}
-			res = res.plus(1, ChronoUnit.DAYS);
 		}
-		return res;
+		return temporal;
 	}
 
 	public WorkingDaysAdjuster(int amountOfDays, Set<DayOfWeek> dayOffs) {
 		this.amountOfDays = amountOfDays;
 		this.dayOffs = dayOffs;
 	}
-
 }

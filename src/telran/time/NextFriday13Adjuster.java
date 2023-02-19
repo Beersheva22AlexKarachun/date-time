@@ -20,15 +20,10 @@ public class NextFriday13Adjuster implements TemporalAdjuster {
 	}
 
 	private Temporal adjustDay(Temporal temporal) {
-		int currentDay = temporal.get(ChronoField.DAY_OF_MONTH);
-
-		if (currentDay < DAY_OF_MONTH) {
-			temporal = temporal.plus(DAY_OF_MONTH - currentDay, ChronoUnit.DAYS);
-		} else {
-			temporal = temporal.minus(currentDay - DAY_OF_MONTH, ChronoUnit.DAYS);
+		if (temporal.get(ChronoField.DAY_OF_MONTH) >= DAY_OF_MONTH) {
 			temporal = temporal.plus(1, ChronoUnit.MONTHS);
 		}
-		return temporal;
+		return temporal.with(ChronoField.DAY_OF_MONTH, DAY_OF_MONTH);
 	}
 
 }
