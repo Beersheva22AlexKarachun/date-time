@@ -7,7 +7,6 @@ import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.stream.IntStream;
 
 public class PrintCalendar {
 
@@ -15,6 +14,12 @@ public class PrintCalendar {
 	private static final int YEAR_OFFSET = 10;
 	private static final int WIDTH_FIELD = 4;
 	private static Locale locale = Locale.forLanguageTag(LANGUAGE_TAG);
+
+	private static record Date(int month, int year, int firstDay) {
+		Date(int month, int year) {
+			this(month, year, 0);
+		}
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -77,12 +82,12 @@ public class PrintCalendar {
 
 	private static Date getCurrentDate() {
 		LocalDate current = LocalDate.now();
-		return new Date(current.getMonthValue(), current.getYear(), 0);
+		return new Date(current.getMonthValue(), current.getYear());
 	}
 
 	private static void printCalendar(Date date) {
 		printTitle(date);
-		printWeekDays(date);
+		printWeekDays(date.firstDay());
 		printDates(date);
 	}
 
@@ -109,9 +114,9 @@ public class PrintCalendar {
 		return LocalDate.of(date.year(), date.month(), 1).getDayOfWeek().minus(date.firstDay()).getValue();
 	}
 
-	private static void printWeekDays(Date date) {
+	private static void printWeekDays(int firstDay) {
 		System.out.print("  ");
-		Arrays.stream(DayOfWeek.values()).map(day -> day.plus(date.firstDay()))
+		Arrays.stream(DayOfWeek.values()).map(day -> day.plus(firstDay))
 				.forEach(day -> System.out.printf("%s ", day.getDisplayName(TextStyle.SHORT, locale)));
 		System.out.println();
 	}
